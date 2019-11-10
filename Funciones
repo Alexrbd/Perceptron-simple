@@ -7,23 +7,17 @@ def Vector_de_Entrada(lista):
     for x in range(0,len(lista)):
         lista[x] = randint(0,1) 
     return lista
-        
-entradas = Vector_de_Entrada(entradas)
-print(entradas)
-    
+
 def Pesos_W(lista):
     for x in range(0,len(lista)):
         lista[x] = round(uniform(0,1.5),3)
     return lista
 
-pesosW = Pesos_W(pesosW)
-print(pesosW)
-
 def Funcion_de_Salida(lista1, lista2):
     resultado = 0
     for x in range(0, len(lista1)):
         resultado = lista1[x]*lista2[x] + resultado
-    return resultado
+    return round(resultado-1,3)
         
 y = Funcion_de_Salida(entradas, pesosW)
 print(y)
@@ -36,3 +30,38 @@ def AND(lista):
             
 d = AND(entradas)
 print(d)
+
+def Ajuste_de_Pesos(pesos, entrada, er):
+    for x in range(0, len(pesos)):
+        pesos[x] = pesos[x] + (er*entrada[x]) 
+    return pesos
+
+def Fase_de_Entrenamiento(peso, ent):
+    print("1° ENTRADA DE LA FASE DE ENTRENAMIENTO (EJEMPLO)")
+    ent = Vector_de_Entrada(ent)
+    print("Vector de la 1° entrada de dimension "+ "[" + str(len(ent)) + "]: " + str(ent))
+    peso = Pesos_W(peso)
+    print("Pesos(Sinapsis): "+ "w1 = " + str(peso[0])  + ", w2 = " + str(peso[1]) + ", w3 = " + str(peso[2]))
+    y = Funcion_de_Salida(ent, peso)
+    print("Valor de salida real = " + str(y))
+    d = AND(ent)
+    print("Valor de la salida deseada = " + str(d))
+    error = d - y
+    print("Error = " + str(error))
+    peso = Ajuste_de_Pesos(peso, ent, error)
+    print("Nuevos pesos: "+ "w1 = " + str(peso[0])  + ", w2 = " + str(peso[1]) + ", w3 = " + str(peso[2]) + "\n")
+    while fabs(error) > 0.1:
+        count = 2
+        ent = Vector_de_Entrada(ent)
+        print("Vector de entrada: " + str(count) + "°:" + str(ent))
+        y = Funcion_de_Salida(ent, peso)
+        print("Valor de salida real = " + str(y))
+        d = AND(ent)
+        print("Valor de la salida deseada = " + str(d))
+        error = d - y
+        print("Error = " + str(error))
+        peso = Ajuste_de_Pesos(peso, ent, error)
+        print("Nuevos pesos: "+ "w1 = " + str(peso[0])  + ", w2 = " + str(peso[1]) + ", w3 = " + str(peso[2]) + "\n")
+        count = count + 1
+
+Fase_de_Entrenamiento(pesosW, entradas)
