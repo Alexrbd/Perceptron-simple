@@ -1,0 +1,136 @@
+from random import uniform, random, randint
+
+pesosW = [0,0,0]
+entradas = [0,0,0]
+
+def Vector_de_Entrada(lista):
+    for x in range(0,len(lista)):
+        lista[x] = randint(0,1) 
+    return lista
+
+def Pesos_W(lista):
+    for x in range(0,len(lista)):
+        lista[x] = round(uniform(0,1.5),3)
+    return lista
+
+def Funcion_de_Salida(lista1, lista2):
+    resultado = 0
+    for x in range(0, len(lista1)):
+        resultado = lista1[x]*lista2[x] + resultado
+    return round(resultado-1,3)
+        
+y = Funcion_de_Salida(entradas, pesosW)
+print(y)
+
+def AND(lista):
+    for x in range(0,len(lista)):
+        if lista[x] != 1:
+            return 0
+    return 1      
+            
+d = AND(entradas)
+print(d)
+
+def Ajuste_de_Pesos(pesos, entrada, er):
+    for x in range(0, len(pesos)):
+        pesos[x] = pesos[x] + (er*entrada[x]) 
+    return pesos
+
+def Fase_de_Entrenamiento_Realista(peso, ent):
+    print("1° ENTRADA DE LA FASE DE ENTRENAMIENTO (EJEMPLO)")
+    ent = Vector_de_Entrada(ent)
+    print("Vector de la 1° entrada de dimension "+ "[" + str(len(ent)) + "]: " + str(ent))
+    peso = Pesos_W(peso)
+    print("Pesos(Sinapsis): "+ "w1 = " + str(peso[0])  + ", w2 = " + str(peso[1]) + ", w3 = " + str(peso[2]))
+    y = Funcion_de_Salida(ent, peso)
+    print("Valor de salida real = " + str(y))
+    d = AND(ent)
+    print("Valor de la salida deseada = " + str(d))
+    error = d - y
+    print("Error = " + str(error))
+    peso = Ajuste_de_Pesos(peso, ent, error)
+    print("Nuevos pesos: "+ "w1 = " + str(peso[0])  + ", w2 = " + str(peso[1]) + ", w3 = " + str(peso[2]) + "\n")
+    while fabs(error) > 0.1:
+        count = 2
+        ent = Vector_de_Entrada(ent)
+        print("Vector de entrada: " + str(count) + "°:" + str(ent))
+        y = Funcion_de_Salida(ent, peso)
+        print("Valor de salida real = " + str(y))
+        d = AND(ent)
+        print("Valor de la salida deseada = " + str(d))
+        error = d - y
+        print("Error = " + str(error))
+        peso = Ajuste_de_Pesos(peso, ent, error)
+        print("Nuevos pesos: "+ "w1 = " + str(peso[0])  + ", w2 = " + str(peso[1]) + ", w3 = " + str(peso[2]) + "\n")
+        count = count + 1
+
+Fase_de_Entrenamiento_Realista(pesosW, entradas)
+
+def Fase_de_Entrenamiento(peso):
+    print("1° ENTRADA DE LA FASE DE ENTRENAMIENTO (EJEMPLO)")
+    count1 = 1
+    count2 = 1
+    i = 0
+    j = 0
+    peso = Pesos_W(peso)
+    for y in range(3):
+        for w in range(2):
+            ent = [i, j, w]
+            print("Vector de entrada: " + str(ent))
+            print("Pesos(Sinapsis): "+ "w1 = " + str(peso[0])  + ", w2 = " + str(peso[1]) + ", w3 = " + str(peso[2]))
+            y = Funcion_de_Salida(ent, peso)
+            print("Valor de salida real = " + str(y))
+            d = AND(ent)
+            print("Valor de la salida deseada = " + str(d))
+            error = d - y
+            print("Error = " + str(error))
+            peso = Ajuste_de_Pesos(peso, ent, error)
+            print("Nuevos pesos: "+ "w1 = " + str(peso[0])  + ", w2 = " + str(peso[1]) + ", w3 = " + str(peso[2]) + "\n")
+            count1 = count1 + 1
+        count2 = count2 + 1
+        if count2%2 == 0:
+            j = 1
+        elif count1 == 5:
+            i = 1
+            j = 0
+        else:
+            j = 0
+        
+Fase_de_Entrenamiento(pesosW)
+
+def Fase_de_Entrenamiento_Invertida(peso):
+    print("1° ENTRADA DE LA FASE DE ENTRENAMIENTO (EJEMPLO)")
+    count1 = 1
+    count2 = 1
+    i = 1
+    j = 1
+    k = 1
+    peso = Pesos_W(peso)
+    for y in range(3):
+        for w in range(2):
+            ent = [i, j, k]
+            print("Vector de entrada: " + str(ent))
+            print("Pesos(Sinapsis): "+ "w1 = " + str(peso[0])  + ", w2 = " + str(peso[1]) + ", w3 = " + str(peso[2]))
+            y = Funcion_de_Salida(ent, peso)
+            print("Valor de salida real = " + str(y))
+            d = AND(ent)
+            print("Valor de la salida deseada = " + str(d))
+            error = d - y
+            print("Error = " + str(error))
+            peso = Ajuste_de_Pesos(peso, ent, error)
+            print("Nuevos pesos: "+ "w1 = " + str(peso[0])  + ", w2 = " + str(peso[1]) + ", w3 = " + str(peso[2]) + "\n")
+            count1 = count1 + 1
+            if k == 1:
+                k = 0
+            else:
+                k = 1
+        count2 = count2 + 1
+        if count2%2 == 0:
+            j = 0
+        elif count1 == 5:
+            i = 0
+            j = 1
+        else:
+            j = 1
+        
+Fase_de_Entrenamiento_Invertida(pesosW)
