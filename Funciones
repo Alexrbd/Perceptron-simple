@@ -1,0 +1,38 @@
+from random import uniform, random, randint
+
+pesosW = [0,0,0]
+entradas = [0,0,0]
+
+def Vector_de_Entrada(lista):
+    for x in range(0,len(lista)):
+        lista[x] = randint(0,1) 
+    return lista
+        
+entradas = Vector_de_Entrada(entradas)
+print(entradas)
+    
+def Pesos_W(lista):
+    for x in range(0,len(lista)):
+        lista[x] = round(uniform(0,1.5),3)
+    return lista
+
+pesosW = Pesos_W(pesosW)
+print(pesosW)
+
+def Funcion_de_Salida(lista1, lista2):
+    resultado = 0
+    for x in range(0, len(lista1)):
+        resultado = lista1[x]*lista2[x] + resultado
+    return resultado
+        
+y = Funcion_de_Salida(entradas, pesosW)
+print(y)
+
+def AND(lista):
+    for x in range(0,len(lista)):
+        if lista[x] != 1:
+            return 0
+    return 1      
+            
+d = AND(entradas)
+print(d)
