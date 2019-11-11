@@ -20,8 +20,11 @@ def Funcion_de_Salida(lista1, lista2):
         resultado = lista1[x]*lista2[x] + resultado
     return round(resultado-1,3)
         
+f = open("Prueba.txt","w")
 y = Funcion_de_Salida(entradas, pesosW)
 print(y)
+f.write("\n"+str(y))
+f.close()
 
 def AND(lista):
     for x in range(0,len(lista)):
@@ -29,8 +32,12 @@ def AND(lista):
             return 0
     return 1      
             
+f = open("Prueba.txt","a")
 d = AND(entradas)
 print(d)
+f.write("\n"+str(d))
+f.close
+
 
 def Ajuste_de_Pesos(pesos, entrada, er):
     for x in range(0, len(pesos)):
@@ -38,37 +45,50 @@ def Ajuste_de_Pesos(pesos, entrada, er):
     return pesos
 
 def Fase_de_Entrenamiento_Realista(peso, ent):
-    print("1° ENTRADA DE LA FASE DE ENTRENAMIENTO (EJEMPLO)")
+    f = open("Prueba.txt","a")
+    print("1era ENTRADA DE LA FASE DE ENTRENAMIENTO (EJEMPLO)")
     ent = Vector_de_Entrada(ent)
-    print("Vector de la 1° entrada de dimension "+ "[" + str(len(ent)) + "]: " + str(ent))
+    f.write("\n"+str(ent))
+    print("Vector de la 1era entrada de dimension "+ "[" + str(len(ent)) + "]: " + str(ent))
     peso = Pesos_W(peso)
+    f.write("\n"+str(peso))
     print("Pesos(Sinapsis): "+ "w1 = " + str(peso[0])  + ", w2 = " + str(peso[1]) + ", w3 = " + str(peso[2]))
     y = Funcion_de_Salida(ent, peso)
+    f.write("\n"+str(y))
     print("Valor de salida real = " + str(y))
     d = AND(ent)
+    f.write("\n"+str(d))
     print("Valor de la salida deseada = " + str(d))
     error = d - y
+    f.write("\n"+str(error))
     print("Error = " + str(error))
     peso = Ajuste_de_Pesos(peso, ent, error)
+    f.write("\n"+str(peso))
     print("Nuevos pesos: "+ "w1 = " + str(peso[0])  + ", w2 = " + str(peso[1]) + ", w3 = " + str(peso[2]) + "\n")
     while fabs(error) > 0.1:
         count = 2
         ent = Vector_de_Entrada(ent)
-        print("Vector de entrada: " + str(count) + "°:" + str(ent))
+        f.write("\n"+str(ent))
+        print("Vector de entrada: " + str(count) + ":" + str(ent))
         y = Funcion_de_Salida(ent, peso)
+        f.write("\n"+str(y))
         print("Valor de salida real = " + str(y))
         d = AND(ent)
+        f.write("\n"+str(d))
         print("Valor de la salida deseada = " + str(d))
         error = d - y
+        f.write("\n"+str(error))
         print("Error = " + str(error))
         peso = Ajuste_de_Pesos(peso, ent, error)
+        f.write("\n"+str(peso))
         print("Nuevos pesos: "+ "w1 = " + str(peso[0])  + ", w2 = " + str(peso[1]) + ", w3 = " + str(peso[2]) + "\n")
         count = count + 1
+    f.close()
 
 Fase_de_Entrenamiento_Realista(pesosW, entradas)
 
 def Fase_de_Entrenamiento(peso):
-    print("1° ENTRADA DE LA FASE DE ENTRENAMIENTO (EJEMPLO)")
+    print("1era ENTRADA DE LA FASE DE ENTRENAMIENTO (EJEMPLO)")
     count1 = 1
     count2 = 1
     i = 0
@@ -100,7 +120,7 @@ def Fase_de_Entrenamiento(peso):
 Fase_de_Entrenamiento(pesosW)
 
 def Fase_de_Entrenamiento_Invertida(peso):
-    print("1° ENTRADA DE LA FASE DE ENTRENAMIENTO (EJEMPLO)")
+    print("1era ENTRADA DE LA FASE DE ENTRENAMIENTO (EJEMPLO)")
     count1 = 1
     count2 = 1
     i = 1
