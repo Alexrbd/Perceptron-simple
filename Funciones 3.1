@@ -155,3 +155,20 @@ def Fase_de_Entrenamiento_Invertida(peso):
             j = 1
         
 Fase_de_Entrenamiento_Invertida(pesosW)
+
+def Pruebas_finales():
+    entrada = [0,0,0]
+    peso = [1,1,1] #Aquí en vez de la lista, hay que rescatar los ultimos pesos actualizados del archivo guardado.
+    for x in range(3):
+        entrada[x] = round(float(input("Escriba el " + str(x+1) + "° digito de su vector de entrada: ")),0)
+    print(entrada)
+    print("Vector de entrada: " + str(entrada))
+    print("Pesos(Sinapsis): "+ "w1 = " + str(peso[0])  + ", w2 = " + str(peso[1]) + ", w3 = " + str(peso[2]))
+    y = Funcion_de_Salida(entrada, peso)
+    print("Valor de salida real = " + str(y))
+    d = AND(entrada)
+    print("Valor de la salida deseada = " + str(d))
+    error = d - y
+    print("Error = " + str(error))
+    
+Pruebas_finales()
