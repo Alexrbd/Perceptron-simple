@@ -178,3 +178,215 @@ def Pruebas_finales():
             break
     
 Pruebas_finales()
+
+#Aqui esta la nueva parte con la ultima linea actualizada
+
+from random import uniform, random, randint
+from math import fabs
+
+pesosW = [0,0,0]
+entradas = [0,0,0]
+
+def Vector_de_Entrada(lista):
+    for x in range(0,len(lista)):
+        lista[x] = randint(0,1) 
+    return lista
+
+def Pesos_W(lista):
+    for x in range(0,len(lista)):
+        lista[x] = round(uniform(0,1.5),3)
+    return lista
+
+def Funcion_de_Salida(lista1, lista2):
+    resultado = 0
+    for x in range(0, len(lista1)):
+        resultado = lista1[x]*lista2[x] + resultado
+    return round(resultado-1,3)
+        
+f = open("Prueba.txt","w")
+y = Funcion_de_Salida(entradas, pesosW)
+print(y)
+f.write("\n"+str(y))
+f.close()
+
+def AND(lista):
+    for x in range(0,len(lista)):
+        if lista[x] != 1:
+            return 0
+    return 1      
+            
+f = open("Prueba.txt","a")
+d = AND(entradas)
+print(d)
+f.write("\n"+str(d))
+f.close
+
+
+def Ajuste_de_Pesos(pesos, entrada, er):
+    for x in range(0, len(pesos)):
+        pesos[x] = pesos[x] + (er*entrada[x]) 
+    return pesos
+
+def Fase_de_Entrenamiento_Realista(peso, ent):
+    f = open("Prueba.txt","a")
+    g = open("Pesos.txt","w")
+    print("1era ENTRADA DE LA FASE DE ENTRENAMIENTO (EJEMPLO)")
+    ent = Vector_de_Entrada(ent)
+    f.write("\nVector entradas: "+str(ent))
+    print("Vector de la 1era entrada de dimension "+ "[" + str(len(ent)) + "]: " + str(ent))
+    peso = Pesos_W(peso)
+    f.write("\nVector de pesos: "+str(peso))
+    print("Pesos(Sinapsis): "+ "w1 = " + str(peso[0])  + ", w2 = " + str(peso[1]) + ", w3 = " + str(peso[2]))
+    y = Funcion_de_Salida(ent, peso)
+    f.write("\nValor de la salida real: "+str(y))
+    print("Valor de salida real = " + str(y))
+    d = AND(ent)
+    f.write("\nValor de la salida deseada: "+str(d))
+    print("Valor de la salida deseada = " + str(d))
+    error = d - y
+    f.write("\nValor de la salida deseada: "+str(error))
+    print("Error = " + str(error))
+    peso = Ajuste_de_Pesos(peso, ent, error)
+    f.write("\nNuevos pesos: "+str(peso))
+    print("Nuevos pesos: "+ "w1 = " + str(peso[0])  + ", w2 = " + str(peso[1]) + ", w3 = " + str(peso[2]) + "\n")
+    while fabs(error) > 0.1:
+        count = 2
+        ent = Vector_de_Entrada(ent)
+        f.write("\n\nVector de entrada:"+str(ent))
+        print("Vector de entrada: " + str(count) + ":" + str(ent))
+        y = Funcion_de_Salida(ent, peso)
+        f.write("\nValor de la salida:"+str(y))
+        print("Valor de salida: = " + str(y))
+        d = AND(ent)
+        f.write("\nValor de salida deseada:"+str(d))
+        print("Valor de la salida deseada = " + str(d))
+        error = d - y
+        f.write("\nError:"+str(error))
+        print("Error = " + str(error))
+        peso = Ajuste_de_Pesos(peso, ent, error)
+        f.write("\nNuevos pesos: "+str(peso))
+        g.write(str(peso)+"\n")
+        print("Nuevos pesos: "+ "w1 = " + str(peso[0])  + ", w2 = " + str(peso[1]) + ", w3 = " + str(peso[2]) + "\n")
+        count = count + 1
+    f.close()
+    g.close()
+
+Fase_de_Entrenamiento_Realista(pesosW, entradas)
+
+def Fase_de_Entrenamiento(peso):
+    print("1era ENTRADA DE LA FASE DE ENTRENAMIENTO (EJEMPLO)")
+    f = open("Prueba.txt","a")
+    f.write("\n\n\nPrimera Fase de entrenamiento")
+    count1 = 1
+    count2 = 1
+    i = 0
+    j = 0
+    peso = Pesos_W(peso)
+    for y in range(3):
+        for w in range(2):
+            ent = [i, j, w]
+            print("Vector de entrada: " + str(ent))
+            f.write("\n\nVector de entrada: "+str(ent))
+            print("Pesos(Sinapsis): "+ "w1 = " + str(peso[0])  + ", w2 = " + str(peso[1]) + ", w3 = " + str(peso[2]))
+            f.write("\nVector de pesos"+str(peso))
+            y = Funcion_de_Salida(ent, peso)
+            print("Valor de salida real = " + str(y))
+            f.write("\nValor de la salida real: "+str(y))
+            d = AND(ent)
+            print("Valor de la salida deseada = " + str(d))
+            f.write("\nValor de la salida deseada: "+str(d))
+            error = d - y
+            print("Error = " + str(error))
+            f.write("\nError: "+str(error))
+            peso = Ajuste_de_Pesos(peso, ent, error)
+            print("Nuevos pesos: "+ "w1 = " + str(peso[0])  + ", w2 = " + str(peso[1]) + ", w3 = " + str(peso[2]) + "\n")
+            f.write("\nNuevos pesos: "+str(peso))
+            count1 = count1 + 1
+        count2 = count2 + 1
+        if count2%2 == 0:
+            j = 1
+        elif count1 == 5:
+            i = 1
+            j = 0
+        else:
+            j = 0
+    f.close()
+        
+Fase_de_Entrenamiento(pesosW)
+
+def Fase_de_Entrenamiento_Invertida(peso):
+    print("1era ENTRADA DE LA FASE DE ENTRENAMIENTO (EJEMPLO)")
+    f = open("Prueba.txt","a")
+    f.write("\n\n\nPrimera fase de entrenamiento invertido")
+    count1 = 1
+    count2 = 1
+    i = 1
+    j = 1
+    k = 1
+    peso = Pesos_W(peso)
+    for y in range(3):
+        for w in range(2):
+            ent = [i, j, k]
+            print("Vector de entrada: " + str(ent))
+            f.write("\n\nVector de entrada: "+str(ent))
+            print("Pesos(Sinapsis): "+ "w1 = " + str(peso[0])  + ", w2 = " + str(peso[1]) + ", w3 = " + str(peso[2]))
+            f.write("\nVector de pesos: "+str(peso))
+            y = Funcion_de_Salida(ent, peso)
+            f.write("\nValor de salida real: "+str(y))
+            print("Valor de salida real = " + str(y))
+            d = AND(ent)
+            print("Valor de la salida deseada = " + str(d))
+            f.write("\nValor de salida deseada: "+str(d))
+            error = d - y
+            print("Error = " + str(error))
+            f.write("\nError: "+str(error))
+            peso = Ajuste_de_Pesos(peso, ent, error)
+            print("Nuevos pesos: "+ "w1 = " + str(peso[0])  + ", w2 = " + str(peso[1]) + ", w3 = " + str(peso[2]) + "\n")
+            f.write("\nNuevos pesos: "+str(peso))
+            count1 = count1 + 1
+            if k == 1:
+                k = 0
+            else:
+                k = 1
+        count2 = count2 + 1
+        if count2%2 == 0:
+            j = 0
+        elif count1 == 5:
+            i = 0
+            j = 1
+        else:
+            j = 1
+    f.close()
+        
+Fase_de_Entrenamiento_Invertida(pesosW)
+
+def Pruebas_finales():
+    f = open("Prueba.txt","a")
+    print("\nPruebas finalees")
+    g = open("Pesos.txt","r")
+    linea= g.readlines()
+    g.close()
+    ultLinea = linea[-1]
+    print(ultLinea)
+    si = 1
+    entrada = [0,0,0]
+    peso = str(ultLinea) #Aquí en vez de la lista, hay que rescatar los ultimos pesos actualizados del archivo guardado.
+    f.write("\nVector de entrada"+str(peso))
+    while True:
+        for x in range(3):
+            entrada[x] = round(float(input("Escriba el " + str(x+1) + "° digito de su vector de entrada: ")),0)
+        print(entrada)
+        print("Vector de entrada: " + str(entrada))
+        print("Pesos(Sinapsis): "+ "w1 = " + str(peso[0])  + ", w2 = " + str(peso[1]) + ", w3 = " + str(peso[2]))
+        y = Funcion_de_Salida(entrada, peso)
+        print("Valor de salida real = " + str(y))
+        d = AND(entrada)
+        print("Valor de la salida deseada = " + str(d))
+        error = d - y
+        print("Error = " + str(error))
+        si = float(input("¿Quiere probar con otra entrada? Si(1) / No(Cualquier numero): "))
+        if si != 1:
+            print("¡Hasta pronto!")
+            break
+    
+Pruebas_finales()
